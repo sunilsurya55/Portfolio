@@ -1,901 +1,490 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sunil Surya | Full Stack Developer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#0a0a0f;
-    --panel:#13131a;
-    --panel-edge:#1f1f29;
-    --gold:#d4af6a;
-    --gold-soft:rgba(212,175,106,0.35);
-    --ink:#eae7e0;
-    --mute:#84818c;
-    --mute-2:#55525e;
-    --serif:'Fraunces', serif;
-    --sans:'Inter', sans-serif;
-    --mono:'JetBrains Mono', monospace;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:var(--sans);
-    overflow-x:hidden;
-    position:relative;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sunil Surya | Portfolio</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: #0f172a;
+      color: white;
+      overflow-x: hidden;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 10%;
+    }
+    nav a {
+      margin: 0 15px;
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 50px 10%;
+    }
+    .hero-text h1 {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+    .hero-text h2 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #38bdf8;
+    }
+    .hero-text p {
+      font-size: 16px;
+      color: #94a3b8;
+      max-width: 600px;
+    }
+    .profile-pic {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 6px solid #38bdf8;
+      box-shadow: 0 0 25px #0ea5e9;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .profile-pic img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-  /* ambient grain + glow backdrop */
-  body::before{
-    content:'';
-    position:fixed; inset:0;
-    background:
-      radial-gradient(ellipse 900px 600px at 15% -5%, rgba(212,175,106,0.10), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 100% 20%, rgba(212,175,106,0.06), transparent 60%);
-    pointer-events:none;
-    z-index:0;
-  }
-  body::after{
-    content:'';
-    position:fixed; inset:0;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-    pointer-events:none;
-    z-index:1;
-    opacity:0.5;
-  }
+    .nav-link.active {
+      color: #38bdf8;
+      font-weight: 600;
+      border-bottom: 2px solid #38bdf8;
+    }
 
-  .wrap{position:relative; z-index:2;}
+    /* ===== Mobile menu toggle button (hidden on desktop) ===== */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      z-index: 1001;
+    }
+    .menu-toggle span {
+      width: 24px;
+      height: 2px;
+      background: #cbd5e1;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .menu-toggle.open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .menu-toggle.open span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
 
-  ::selection{background:var(--gold-soft); color:#fff;}
+    /* ===== Responsive breakpoints ===== */
 
-  a{color:inherit;}
+    /* Tablet and below */
+    @media (max-width: 900px) {
+      .hero {
+        padding: 50px 6%;
+      }
+      header {
+        padding: 18px 6%;
+      }
+      section {
+        padding-left: 6% !important;
+        padding-right: 6% !important;
+      }
+    }
 
-  .eyebrow{
-    font-family:var(--mono);
-    font-size:11px;
-    letter-spacing:0.22em;
-    text-transform:uppercase;
-    color:var(--gold);
-    display:flex;
-    align-items:center;
-    gap:10px;
-  }
-  .eyebrow::before{
-    content:'';
-    width:22px; height:1px;
-    background:var(--gold);
-    display:inline-block;
-  }
+    /* Mobile nav + stacked hero */
+    @media (max-width: 768px) {
+      header {
+        flex-wrap: wrap;
+      }
+      .menu-toggle {
+        display: flex;
+      }
+      nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: #1e293b;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+      }
+      nav.open {
+        display: flex;
+        max-height: 400px;
+        border-top: 1px solid #334155;
+      }
+      nav a {
+        margin: 0;
+        padding: 16px 6%;
+        border-bottom: 1px solid #334155;
+        width: 100%;
+      }
+      nav a.active {
+        border-bottom: 1px solid #334155;
+      }
 
-  /* ---------- header ---------- */
-  header{
-    position:sticky; top:0; z-index:1000;
-    display:flex; justify-content:space-between; align-items:center;
-    padding:22px 7%;
-    background:rgba(10,10,15,0.78);
-    backdrop-filter:blur(14px) saturate(140%);
-    border-bottom:1px solid rgba(255,255,255,0.06);
-  }
-  .brand{
-    font-family:var(--serif);
-    font-size:19px;
-    font-weight:500;
-    letter-spacing:0.01em;
-  }
-  .brand span{color:var(--gold); font-style:italic;}
-  nav{display:flex; gap:34px;}
-  .nav-link{
-    font-family:var(--mono);
-    font-size:11px;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    text-decoration:none;
-    color:var(--mute);
-    position:relative;
-    padding-bottom:4px;
-    transition:color 0.3s ease;
-  }
-  .nav-link::after{
-    content:'';
-    position:absolute; left:0; bottom:0;
-    width:0; height:1px;
-    background:var(--gold);
-    transition:width 0.3s ease;
-  }
-  .nav-link:hover{color:var(--ink);}
-  .nav-link.active{color:var(--gold);}
-  .nav-link.active::after{width:100%;}
-  .nav-toggle{display:none;}
+      .hero {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 40px 6% 50px;
+        gap: 30px;
+      }
+      .hero-text p {
+        max-width: 100%;
+        margin: 0 auto;
+      }
+      .profile-pic {
+        width: 200px;
+        height: 200px;
+      }
+      .hero-text h1 {
+        font-size: 32px;
+      }
+      .hero-text h2 {
+        font-size: 20px;
+      }
+    }
 
-  /* ---------- hero ---------- */
-  .hero{
-    display:grid;
-    grid-template-columns:1.15fr 0.85fr;
-    align-items:center;
-    gap:40px;
-    padding:90px 7% 110px;
-    min-height:88vh;
-    perspective:1400px;
-  }
-  .hero-text{position:relative;}
-  .kicker{margin-bottom:26px;}
-  .hero-text h1{
-    font-family:var(--serif);
-    font-weight:300;
-    font-size:clamp(40px, 6vw, 68px);
-    line-height:1.05;
-    letter-spacing:-0.01em;
-  }
-  .hero-text h1 .name{
-    display:block;
-    font-style:italic;
-    font-weight:500;
-    color:var(--gold);
-    background:linear-gradient(120deg, #f1d9a0, #d4af6a 45%, #9c7c3f);
-    -webkit-background-clip:text;
-    background-clip:text;
-    -webkit-text-fill-color:transparent;
-  }
-  .role-line{
-    margin-top:22px;
-    font-family:var(--mono);
-    font-size:15px;
-    color:var(--mute);
-    letter-spacing:0.04em;
-    height:24px;
-  }
-  .role-line #typing{color:var(--ink); border-right:1px solid var(--gold); padding-right:3px;}
-  .hero-text p.lede{
-    margin-top:28px;
-    max-width:540px;
-    font-size:15.5px;
-    line-height:1.85;
-    color:var(--mute);
-    font-weight:300;
-  }
-  .hero-cta{
-    margin-top:38px;
-    display:flex;
-    gap:18px;
-    align-items:center;
-  }
-  .btn-gold{
-    font-family:var(--mono);
-    font-size:11.5px;
-    letter-spacing:0.1em;
-    text-transform:uppercase;
-    text-decoration:none;
-    padding:15px 28px;
-    background:linear-gradient(135deg, #e9cf94, var(--gold));
-    color:#16140c;
-    border-radius:2px;
-    font-weight:500;
-    box-shadow:0 12px 30px -10px rgba(212,175,106,0.55);
-    transition:transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s ease;
-  }
-  .btn-gold:hover{transform:translateY(-3px); box-shadow:0 18px 36px -10px rgba(212,175,106,0.7);}
-  .btn-ghost{
-    font-family:var(--mono);
-    font-size:11.5px;
-    letter-spacing:0.1em;
-    text-transform:uppercase;
-    text-decoration:none;
-    color:var(--ink);
-    padding:14px 6px;
-    border-bottom:1px solid var(--mute-2);
-    transition:border-color 0.3s ease, color 0.3s ease;
-  }
-  .btn-ghost:hover{border-color:var(--gold); color:var(--gold);}
+    /* Small phones */
+    @media (max-width: 480px) {
+      .hero-text h1 {
+        font-size: 26px;
+      }
+      .hero-text h2 {
+        font-size: 17px;
+      }
+      .hero-text p {
+        font-size: 14px;
+      }
+      .profile-pic {
+        width: 160px;
+        height: 160px;
+        border-width: 4px;
+      }
+      header h2 {
+        font-size: 18px;
+      }
+    }
 
-  /* 3D tilt photo */
-  .portrait-stage{
-    display:flex; justify-content:center; align-items:center;
-    transform-style:preserve-3d;
-  }
-  .portrait{
-    position:relative;
-    width:320px; height:380px;
-    border-radius:6px;
-    transform-style:preserve-3d;
-    transition:transform 0.15s ease-out;
-    will-change:transform;
-  }
-  .portrait-frame{
-    position:absolute; inset:0;
-    border-radius:6px;
-    overflow:hidden;
-    background:var(--panel);
-    border:1px solid rgba(212,175,106,0.25);
-    box-shadow:0 30px 60px -25px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.02) inset;
-    transform:translateZ(0);
-  }
-  .portrait-frame img{
-    width:100%; height:100%;
-    object-fit:cover;
-    filter:grayscale(15%) contrast(1.05) brightness(0.95);
-    transform:scale(1.02);
-  }
-  .portrait-sheen{
-    position:absolute; inset:0;
-    background:linear-gradient(125deg, rgba(255,255,255,0.18) 0%, transparent 35%);
-    mix-blend-mode:overlay;
-    opacity:0.8;
-  }
-  .portrait-edge{
-    position:absolute;
-    inset:-1px;
-    border-radius:7px;
-    border:1px solid var(--gold-soft);
-    transform:translateZ(-20px);
-    opacity:0.6;
-  }
-  .portrait-tag{
-    position:absolute;
-    bottom:-18px; left:-18px;
-    background:var(--panel);
-    border:1px solid var(--panel-edge);
-    padding:12px 16px;
-    border-radius:4px;
-    font-family:var(--mono);
-    font-size:10.5px;
-    letter-spacing:0.08em;
-    color:var(--gold);
-    transform:translateZ(40px);
-    box-shadow:0 20px 40px -20px rgba(0,0,0,0.8);
-  }
-  .portrait-tag b{display:block; color:var(--ink); font-size:13px; font-family:var(--sans); font-weight:600; letter-spacing:0; margin-top:2px;}
-
-  /* ---------- section shells ---------- */
-  section.block{
-    padding:110px 7%;
-    position:relative;
-  }
-  .section-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:baseline;
-    margin-bottom:60px;
-    border-bottom:1px solid rgba(255,255,255,0.07);
-    padding-bottom:26px;
-  }
-  .section-head h2{
-    font-family:var(--serif);
-    font-weight:300;
-    font-size:clamp(30px, 4vw, 44px);
-    font-style:italic;
-  }
-  .section-head .count{
-    font-family:var(--mono);
-    font-size:12px;
-    color:var(--mute-2);
-  }
-
-  /* ---------- about ---------- */
-  .about-grid{
-    display:grid;
-    grid-template-columns:0.9fr 1.1fr;
-    gap:60px;
-  }
-  .about-pull{
-    font-family:var(--serif);
-    font-style:italic;
-    font-size:26px;
-    line-height:1.5;
-    color:var(--ink);
-    border-left:1px solid var(--gold-soft);
-    padding-left:26px;
-  }
-  .about-pull em{color:var(--gold); font-style:normal;}
-  .about-copy p{
-    color:var(--mute);
-    font-size:15px;
-    line-height:1.9;
-    margin-bottom:20px;
-    font-weight:300;
-  }
-  .about-copy strong{color:var(--ink); font-weight:500;}
-  .about-stats{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:1px;
-    margin-top:40px;
-    background:rgba(255,255,255,0.07);
-  }
-  .stat{
-    background:var(--bg);
-    padding:22px 18px;
-  }
-  .stat b{
-    display:block;
-    font-family:var(--serif);
-    font-size:30px;
-    color:var(--gold);
-    font-weight:500;
-  }
-  .stat span{
-    font-family:var(--mono);
-    font-size:10.5px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:var(--mute);
-  }
-
-  /* ---------- experience timeline ---------- */
-  .timeline{position:relative; padding-left:46px;}
-  .timeline::before{
-    content:'';
-    position:absolute; left:6px; top:6px; bottom:6px;
-    width:1px;
-    background:linear-gradient(180deg, var(--gold), rgba(212,175,106,0.05));
-  }
-  .t-item{
-    position:relative;
-    padding-bottom:54px;
-  }
-  .t-item:last-child{padding-bottom:0;}
-  .t-dot{
-    position:absolute; left:-46px; top:4px;
-    width:11px; height:11px;
-    border-radius:50%;
-    background:var(--bg);
-    border:1.5px solid var(--gold);
-    box-shadow:0 0 0 4px var(--bg), 0 0 16px var(--gold-soft);
-  }
-  .t-card{
-    background:var(--panel);
-    border:1px solid var(--panel-edge);
-    border-radius:4px;
-    padding:30px 34px;
-    transition:transform 0.4s cubic-bezier(.2,.8,.2,1), border-color 0.4s ease, box-shadow 0.4s ease;
-  }
-  .t-card:hover{
-    transform:translateX(6px);
-    border-color:rgba(212,175,106,0.4);
-    box-shadow:0 24px 50px -28px rgba(0,0,0,0.75);
-  }
-  .t-top{
-    display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px;
-    margin-bottom:6px;
-  }
-  .t-role{font-family:var(--serif); font-size:20px; font-weight:500;}
-  .t-period{font-family:var(--mono); font-size:11px; color:var(--mute-2); letter-spacing:0.05em; white-space:nowrap;}
-  .t-org{font-family:var(--mono); font-size:12px; color:var(--gold); letter-spacing:0.04em; margin-bottom:16px;}
-  .t-card ul{list-style:none; display:grid; gap:10px;}
-  .t-card li{
-    color:var(--mute);
-    font-size:14px;
-    line-height:1.6;
-    padding-left:18px;
-    position:relative;
-    font-weight:300;
-  }
-  .t-card li::before{
-    content:'';
-    position:absolute; left:0; top:8px;
-    width:6px; height:1px;
-    background:var(--gold);
-  }
-
-  /* ---------- skills ---------- */
-  .skill-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-    gap:1px;
-    background:rgba(255,255,255,0.07);
-    border:1px solid rgba(255,255,255,0.07);
-  }
-  .skill-card{
-    background:var(--bg);
-    padding:32px 28px;
-    transition:background 0.35s ease, transform 0.35s ease;
-  }
-  .skill-card:hover{background:var(--panel); transform:translateY(-4px);}
-  .skill-num{font-family:var(--mono); font-size:11px; color:var(--mute-2); letter-spacing:0.1em;}
-  .skill-card h3{
-    font-family:var(--serif);
-    font-size:18px;
-    font-weight:500;
-    margin:14px 0 14px;
-    color:var(--gold);
-  }
-  .tag-row{display:flex; flex-wrap:wrap; gap:8px;}
-  .tag{
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--mute);
-    border:1px solid var(--panel-edge);
-    padding:6px 11px;
-    border-radius:2px;
-    letter-spacing:0.02em;
-  }
-
-  /* ---------- projects (3D tilt cards) ---------- */
-  .project-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-    gap:28px;
-    perspective:1600px;
-  }
-  .p-card{
-    position:relative;
-    background:linear-gradient(165deg, var(--panel), #0d0d12);
-    border:1px solid var(--panel-edge);
-    border-radius:6px;
-    padding:32px 30px 30px;
-    transform-style:preserve-3d;
-    transition:transform 0.12s ease-out, box-shadow 0.4s ease, border-color 0.4s ease;
-    will-change:transform;
-    display:flex;
-    flex-direction:column;
-  }
-  .p-card:hover{
-    border-color:rgba(212,175,106,0.35);
-    box-shadow:0 40px 70px -30px rgba(0,0,0,0.8);
-  }
-  .p-status{
-    position:absolute; top:28px; right:28px;
-    font-family:var(--mono);
-    font-size:9.5px;
-    letter-spacing:0.1em;
-    text-transform:uppercase;
-    padding:5px 10px;
-    border-radius:2px;
-    border:1px solid var(--panel-edge);
-    color:var(--mute-2);
-  }
-  .p-status.live{color:var(--gold); border-color:var(--gold-soft);}
-  .p-index{font-family:var(--mono); font-size:11px; color:var(--gold); letter-spacing:0.1em; margin-bottom:18px;}
-  .p-card h3{
-    font-family:var(--serif);
-    font-size:22px;
-    font-weight:500;
-    margin-bottom:14px;
-    max-width:80%;
-  }
-  .p-card p.desc{
-    color:var(--mute);
-    font-size:14px;
-    line-height:1.75;
-    margin-bottom:16px;
-    font-weight:300;
-  }
-  .p-card ul{list-style:none; margin-bottom:20px; display:grid; gap:8px;}
-  .p-card li{
-    font-size:13px;
-    color:var(--mute);
-    line-height:1.6;
-    padding-left:16px;
-    position:relative;
-    font-weight:300;
-  }
-  .p-card li::before{content:'—'; position:absolute; left:0; color:var(--mute-2); font-size:12px;}
-  .p-stack{
-    display:flex; flex-wrap:wrap; gap:7px;
-    margin-top:auto;
-    margin-bottom:22px;
-  }
-  .p-stack span{
-    font-family:var(--mono);
-    font-size:10.5px;
-    color:var(--mute);
-    border:1px solid var(--panel-edge);
-    padding:5px 10px;
-    border-radius:2px;
-  }
-  .p-link{
-    font-family:var(--mono);
-    font-size:11.5px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    text-decoration:none;
-    color:var(--gold);
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-  }
-  .p-link::after{content:'→'; transition:transform 0.3s ease;}
-  .p-link:hover::after{transform:translateX(5px);}
-  .p-link.disabled{color:var(--mute-2); pointer-events:none;}
-
-  /* ---------- contact ---------- */
-  .contact-panel{
-    position:relative;
-    background:linear-gradient(150deg, #15131a, #0a0a0f);
-    border:1px solid var(--panel-edge);
-    border-radius:8px;
-    padding:70px 7%;
-    overflow:hidden;
-  }
-  .contact-panel::before{
-    content:'';
-    position:absolute;
-    top:-40%; right:-10%;
-    width:500px; height:500px;
-    background:radial-gradient(circle, rgba(212,175,106,0.12), transparent 70%);
-    pointer-events:none;
-  }
-  .contact-inner{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:50px;
-    position:relative;
-    z-index:2;
-  }
-  .contact-inner h2{
-    font-family:var(--serif);
-    font-style:italic;
-    font-weight:300;
-    font-size:clamp(32px, 4.5vw, 50px);
-    line-height:1.15;
-    max-width:480px;
-  }
-  .contact-inner h2 em{color:var(--gold); font-style:normal;}
-  .contact-list{display:grid; gap:22px; align-self:center;}
-  .c-row{
-    display:flex; justify-content:space-between; align-items:baseline;
-    border-bottom:1px solid rgba(255,255,255,0.08);
-    padding-bottom:16px;
-  }
-  .c-row .label{font-family:var(--mono); font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--mute-2);}
-  .c-row a, .c-row span.val{font-size:15px; text-decoration:none; color:var(--ink); font-weight:300;}
-  .c-row a:hover{color:var(--gold);}
-  .social-row{display:flex; gap:26px; margin-top:6px;}
-  .social-row a{
-    font-family:var(--mono); font-size:12px; letter-spacing:0.08em; text-transform:uppercase;
-    text-decoration:none; color:var(--mute); border-bottom:1px solid transparent; padding-bottom:4px;
-    transition:color 0.3s, border-color 0.3s;
-  }
-  .social-row a:hover{color:var(--gold); border-color:var(--gold);}
-
-  footer{
-    padding:32px 7%;
-    display:flex; justify-content:space-between; align-items:center;
-    font-family:var(--mono);
-    font-size:11px;
-    color:var(--mute-2);
-    letter-spacing:0.04em;
-    border-top:1px solid rgba(255,255,255,0.06);
-  }
-
-  /* ---------- responsive ---------- */
-  @media (max-width: 900px){
-    .hero{grid-template-columns:1fr; padding-top:60px; min-height:auto;}
-    .portrait-stage{order:-1; margin-bottom:30px;}
-    .about-grid{grid-template-columns:1fr; gap:36px;}
-    .contact-inner{grid-template-columns:1fr; gap:36px;}
-    nav{display:none;}
-  }
-  @media (max-width:520px){
-    .portrait{width:260px; height:300px;}
-    .about-stats{grid-template-columns:1fr;}
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important; animation:none !important;}
-  }
-
-  :focus-visible{outline:1.5px solid var(--gold); outline-offset:3px;}
-</style>
+  </style>
 </head>
 <body>
-<div class="wrap">
-
   <header>
-    <div class="brand">Sunil <span>Surya</span></div>
-    <nav>
+    <h2>Sunil's Portfolio.</h2>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="mainNav">
       <a href="#home" class="nav-link">Home</a>
       <a href="#about" class="nav-link">About</a>
       <a href="#experience" class="nav-link">Experience</a>
       <a href="#skills" class="nav-link">Skills</a>
-      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#projects" class="nav-link">Project</a>
       <a href="#contact" class="nav-link">Contact</a>
     </nav>
   </header>
 
-  <!-- HERO -->
-  <section class="hero" id="home">
+  <section class="hero"  id="home">
+    
     <div class="hero-text">
-      <div class="eyebrow kicker">Full Stack Developer · Bangalore</div>
-      <h1>Building clean,<br>considered software<span class="name">— Sunil K</span></h1>
-      <div class="role-line">I'm a <span id="typing"></span></div>
-      <p class="lede">MCA student at Presidency University, Bangalore, with hands-on depth in the MERN stack, Java, and Python. I've shipped a school management system, an AI document summarizer, and a hand-gesture mouse controller — and completed internships across full-stack development and software testing.</p>
-      <div class="hero-cta">
-        <a href="Resume.pdf" target="_blank" class="btn-gold">View Résumé</a>
-        <a href="#projects" class="btn-ghost">See Projects</a>
-      </div>
+      <h1>Hello, It's Me</h1>
+      <h2>  Sunil K</h2>
+      <h2>And I'm a <span id="typing"></span></h2>
+      <p>MCA student at Presidency University, Bangalore with strong skills in MERN stack, Java, and Python. <br/>
+         Built projects like Student Management System and Hand Gesture Mouse Controller. <br/>
+         Completed internships with practical exposure in full stack development and software testing.</p>
     </div>
-
-    <div class="portrait-stage">
-      <div class="portrait" id="portrait">
-        <div class="portrait-edge"></div>
-        <div class="portrait-frame">
-          <img src="mypic1.jpg" alt="Sunil Surya">
-          <div class="portrait-sheen"></div>
-        </div>
-        <div class="portrait-tag">Available for<b>Full-time roles</b></div>
-      </div>
+    
+    <div class="profile-pic">
+      <img src="mypic1.jpg" alt="Sunil Surya">
     </div>
   </section>
 
-  <!-- ABOUT -->
-  <section class="block" id="about">
-    <div class="section-head">
-      <h2>About</h2>
-      <span class="count">01 / 05</span>
+  <!-- About page -->
+  <section style="padding: 50px 10%; background-color: #1e293b;" id="about">
+  <h2 style="font-size: 32px; color: #38bdf8; margin-bottom: 20px;">About Me</h2>
+  <p style="color: #cbd5e1; font-size: 16px; line-height: 1.8; max-width: 900px;">
+    I'm <strong>Sunil </strong>, a passionate and detail-oriented MCA student at <strong>Presidency University, Bangalore</strong>, with a strong foundation in <strong>Computer Science</strong>. I hold a BCA degree from <strong>Tumkur University</strong>, and have developed solid expertise in both frontend and backend technologies including the <strong>MERN stack, Java, Python, and SQL</strong>.
+    <br /><br />
+    I completed a hands-on internship at <strong>"Q-Spiders" and "Technotharanga Pvt Ltd"</strong>, where I gained real-time experience in full stack development and software testing. My project portfolio includes applications like <strong>AI Document Summarizer</strong> and <strong>Hand Gesture Controlled Mouse</strong>, showing my passion for blending innovation with usability.
+    <br /><br />
+    I am a motivated and detail-oriented Full Stack Developer and hands-on experience in web application development. I have worked with technologies such as React.js, Node.js, MongoDB, Java, Python, and JavaScript to build scalable and user-friendly applications. 
+    <br><br>
+    Through my internships and academic projects, I have developed strong skills in full-stack development, REST API integration, database management, software testing, and Agile methodologies. I am passionate about learning emerging technologies, solving real-world problems, and creating innovative digital solutions that deliver meaningful user experiences.
+    <br> <br>
+    My strengths include strong analytical thinking, quick learning, and effective communication. I'm also an enthusiastic team player and a committed problem solver with a good balance of technical and soft skills.
+  </p>
+</section>
+
+ <!-- Experience page -->
+<section style="padding: 50px 10%; background-color: #0f172a;" id="experience">
+  <h2 style="font-size: 32px; color: #38bdf8; margin-bottom: 30px;">Experience</h2>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+    
+    <!-- Experience 1 -->
+    <div style="background: #1e293b; padding: 25px; border-radius: 12px; border-left: 4px solid #38bdf8;">
+      <h3 style="color: #facc15; margin-bottom: 5px;">Internship - Full Stack Development</h3>
+      <p style="color: #38bdf8; font-size: 14px; margin-bottom: 10px;">Technotharanga Solutions Pvt. Ltd.</p>
+      <p style="color: #94a3b8; font-size: 13px; margin-bottom: 15px;">Full-time Internship</p>
+      <ul style="color: #cbd5e1; font-size: 14px; line-height: 1.8; list-style-position: inside;">
+        <li>Developed a School Management System using React.js, Node.js, and MongoDB</li> <br>
+        <li>Built modules for student & staff management, attendance tracking, and timetable management</li>  <br>
+        <li>Implemented RESTful APIs and followed MVC architecture</li> <br>
+        <li>Enhanced skills in full-stack development and database management</li>
+      </ul>
     </div>
-    <div class="about-grid">
-      <div class="about-pull">
-        A detail-oriented developer who treats <em>code quality</em> and <em>user experience</em> as the same problem, viewed from two sides.
-      </div>
-      <div class="about-copy">
-        <p>I'm <strong>Sunil</strong>, an MCA student at <strong>Presidency University, Bangalore</strong>, with a BCA from <strong>Tumkur University</strong> behind me. My foundation spans the <strong>MERN stack, Java, Python, and SQL</strong> — covering both ends of the stack with equal comfort.</p>
-        <p>I completed hands-on internships at <strong>Q-Spiders</strong> and <strong>Technotharanga Pvt Ltd</strong>, where I gained real-world experience in full-stack development and software testing. My project work — including an <strong>AI Document Summarizer</strong> and a <strong>Hand Gesture Controlled Mouse</strong> — reflects a consistent interest in blending innovation with usability.</p>
-        <p>Through internships and academic projects, I've built strong fundamentals in REST API integration, database management, and Agile workflows — and I stay curious about emerging technologies and the real problems they're built to solve.</p>
-        <div class="about-stats">
-          <div class="stat"><b>2+</b><span>Internships</span></div>
-          <div class="stat"><b>3</b><span>Core Projects</span></div>
-          <div class="stat"><b>5+</b><span>Languages &amp; Tools</span></div>
-        </div>
-      </div>
+
+    <!-- Experience 2 -->
+    <div style="background: #1e293b; padding: 25px; border-radius: 12px; border-left: 4px solid #38bdf8;">
+      <h3 style="color: #facc15; margin-bottom: 5px;">Training Program - QA & Full Stack</h3>
+      <p style="color: #38bdf8; font-size: 14px; margin-bottom: 10px;">Q-Spiders</p>
+      <p style="color: #94a3b8; font-size: 13px; margin-bottom: 15px;">Hands-on Training</p>
+      <ul style="color: #cbd5e1; font-size: 14px; line-height: 1.8; list-style-position: inside;"> 
+        <li>Trained in software testing methodologies and automation testing</li> <br>
+        <li>Worked on real-world projects and industry-standard practices</li> <br>
+        <li>Gained practical experience in manual testing, test case design, and bug reporting </li> <br>
+        <li>Developed problem-solving skills and best coding practices</li>
+      </ul>
     </div>
-  </section>
 
-  <!-- EXPERIENCE -->
-          <section class="block" id="experience">
-    <div class="section-head">
-      <h2>Experience</h2>
-      <span class="count">02 / 05</span>
+    <!-- Experience 3 -->
+    <div style="background: #1e293b; padding: 25px; border-radius: 12px; border-left: 4px solid #38bdf8;">
+      <h3 style="color: #facc15; margin-bottom: 5px;">Deloitte Australia Data Analytics Virtual Experience</h3>
+      <p style="color: #38bdf8; font-size: 14px; margin-bottom: 10px;">Forage</p>
+      <p style="color: #94a3b8; font-size: 13px; margin-bottom: 15px;">Virtual Internship </p>
+      <ul style="color: #cbd5e1; font-size: 14px; line-height: 1.8; list-style-position: inside;">
+        <li>Analysed datasets using Excel to identify patterns and trends</li>
+        <li>Developed Tableau dashboards to visualize equality metrics</li>
+        <li>Generated actionable insights to support business decisions</li>
+      </ul>
     </div>
-    <div class="timeline">
 
-      <div class="t-item">
-        <div class="t-dot"></div>
-        <div class="t-card">
-          <div class="t-top">
-            <div class="t-role">Full Stack Development Intern</div>
-            <div class="t-period">Internship</div>
-          </div>
-          <div class="t-org">Technotharanga Solutions Pvt. Ltd.</div>
-          <ul>
-            <li>Developed a School Management System using React.js, Node.js, and MongoDB.</li>
-            <li>Built modules for student &amp; staff management, attendance tracking, and timetable management.</li>
-            <li>Implemented RESTful APIs following MVC architecture.</li>
-            <li>Strengthened full-stack development and database management skills.</li>
-          </ul>
-        </div>
-      </div>
+  </div>
+</section>
 
-      <div class="t-item">
-        <div class="t-dot"></div>
-        <div class="t-card">
-          <div class="t-top">
-            <div class="t-role">QA &amp; Full Stack Training</div>
-            <div class="t-period">Hands-on Training</div>
-          </div>
-          <div class="t-org">Q-Spiders</div>
-          <ul>
-            <li>Trained in software testing methodologies and automation testing.</li>
-            <li>Worked on real-world projects following industry-standard practices.</li>
-            <li>Gained practical experience in manual testing, test case design, and bug reporting.</li>
-            <li>Developed problem-solving instincts and clean coding practices.</li>
-          </ul>
-        </div>
-      </div>
+ <!-- skills page -->
+<section style="padding: 50px 10%; background-color: #0f172a;" id="skills">
+  <h2 style="font-size: 32px; color: #38bdf8; margin-bottom: 30px;">Technical Skills</h2>
 
-      <div class="t-item">
-        <div class="t-dot"></div>
-        <div class="t-card">
-          <div class="t-top">
-            <div class="t-role">Data Analytics Virtual Experience</div>
-            <div class="t-period">Virtual Internship</div>
-          </div>
-          <div class="t-org">Deloitte Australia · via Forage</div>
-          <ul>
-            <li>Analysed datasets in Excel to identify patterns and trends.</li>
-            <li>Developed Tableau dashboards to visualise equality metrics.</li>
-            <li>Generated actionable insights to support business decisions.</li>
-          </ul>
-        </div>
-      </div>
-
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+    
+    <div>
+      <h3 style="color: #facc15; margin-bottom: 10px;">Languages</h3>
+      <p style="color: #cbd5e1;">Java, Python, C++</p>
     </div>
-  </section>
 
-  <!-- SKILLS -->
-  <section class="block" id="skills">
-    <div class="section-head">
-      <h2>Skills</h2>
-      <span class="count">03 / 05</span>
+    <div>
+      <h3 style="color: #facc15; margin-bottom: 10px;">Web Technologies</h3>
+      <p style="color: #cbd5e1;">HTML, CSS, JavaScript, React.js</p>
     </div>
-    <div class="skill-grid">
-      <div class="skill-card">
-        <div class="skill-num">LANG</div>
-        <h3>Languages</h3>
-        <div class="tag-row">
-          <span class="tag">Java</span><span class="tag">Python</span><span class="tag">C++</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-num">WEB</div>
-        <h3>Web Technologies</h3>
-        <div class="tag-row">
-          <span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">React.js</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-num">TOOLS</div>
-        <h3>Frameworks &amp; Tools</h3>
-        <div class="tag-row">
-          <span class="tag">MongoDB</span><span class="tag">Express.js</span><span class="tag">Node.js</span><span class="tag">Postman</span><span class="tag">Git</span><span class="tag">XAMPP</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-num">DATA</div>
-        <h3>Databases</h3>
-        <div class="tag-row">
-          <span class="tag">MySQL</span><span class="tag">MongoDB</span>
-        </div>
-      </div>
-      <div class="skill-card">
-        <div class="skill-num">CORE</div>
-        <h3>Concepts</h3>
-        <div class="tag-row">
-          <span class="tag">Data Structures</span><span class="tag">Manual Testing</span><span class="tag">Automation Testing</span>
-        </div>
-      </div>
+
+    <div>
+      <h3 style="color: #facc15; margin-bottom: 10px;">Frameworks & Tools</h3>
+      <p style="color: #cbd5e1;">MERN Stack (MongoDB, Express.js, React.js, Node.js), Postman, Git, XAMPP</p>
     </div>
-  </section>
 
-  <!-- PROJECTS -->
-  <section class="block" id="projects">
-    <div class="section-head">
-      <h2>Projects</h2>
-      <span class="count">04 / 05</span>
+    <div>
+      <h3 style="color: #facc15; margin-bottom: 10px;">Databases</h3>
+      <p style="color: #cbd5e1;">MySQL, MongoDB</p>
     </div>
-    <div class="project-grid">
 
-      <div class="p-card tilt-card">
-        <span class="p-status live">Completed</span>
-        <div class="p-index">P.01</div>
-        <h3>Hand Gesture Mouse Controller</h3>
-        <p class="desc">A Python application using OpenCV, MediaPipe, and PyAutoGUI to control mouse functions entirely via hand gestures, enabling hands-free interaction.</p>
-        <ul>
-          <li>Real-time fingertip tracking for accurate cursor movement and click recognition.</li>
-          <li>Accessible, gesture-based interface improving usability for mobility-limited users.</li>
-        </ul>
-        <div class="p-stack">
-          <span>Python</span><span>OpenCV</span><span>MediaPipe</span><span>PyAutoGUI</span>
-        </div>
-        <a href="Resume.pdf" download class="p-link">View Details</a>
-      </div>
-
-      <div class="p-card tilt-card">
-        <span class="p-status live">Completed</span>
-        <div class="p-index">P.02</div>
-        <h3>AI Document Summarizer</h3>
-        <p class="desc">An AI-powered web application using React.js and Tailwind CSS that generates concise summaries from large text documents.</p>
-        <ul>
-          <li>Integrated NLP-based APIs to improve information retrieval and cut manual reading time.</li>
-          <li>Clean, responsive UI for uploading documents and receiving structured summaries in real time.</li>
-        </ul>
-        <div class="p-stack">
-          <span>React.js</span><span>Tailwind</span><span>Python</span><span>NLP</span>
-        </div>
-        <a href="Resume.pdf" download class="p-link">View Details</a>
-      </div>
-
-      <div class="p-card tilt-card">
-        <span class="p-status">In Progress</span>
-        <div class="p-index">P.03</div>
-        <h3>Personal AI Assistant</h3>
-        <p class="desc">A productivity-focused assistant with intelligent task management, context-aware recommendations, and conversational interaction.</p>
-        <ul>
-          <li>Modular architecture supporting voice commands, scheduling automation, and NLU.</li>
-          <li>Designed for smart reminders, knowledge retrieval, and adaptive workflow support.</li>
-        </ul>
-        <div class="p-stack">
-          <span>Python</span><span>JavaScript</span><span>NLP</span><span>API Integration</span>
-        </div>
-        <span class="p-link disabled">In Development</span>
-      </div>
-
+    <div>
+      <h3 style="color: #facc15; margin-bottom: 10px;">Concepts</h3>
+      <p style="color: #cbd5e1;">Data Structures, Manual Testing, Automation Testing</p>
     </div>
-  </section>
 
-  <!-- CONTACT -->
-  <section class="block" id="contact">
-    <div class="section-head">
-      <h2>Contact</h2>
-      <span class="count">05 / 05</span>
+  </div>
+</section>
+
+<!-- project page -->
+ <section style="padding: 50px 10%; background-color: #1e293b;" id="projects">
+  <h2 style="font-size: 32px; color: #38bdf8; margin-bottom: 30px;">My Projects</h2>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+
+    <!-- Project 1 -->
+    <div style="background: #0f172a; padding: 20px; border-radius: 12px; border: 1px solid #334155;">
+      <h3 style="color: #facc15;">Hand Gesture Mouse Controller</h3>
+      <p style="color: #cbd5e1; font-size: 14px; margin: 10px 0;">
+        Developed a Python application using OpenCV, MediaPipe, and PyAutoGUI to control mouse functions entirely via hand
+        gestures, enabling hands-free interaction.
+      </p>
+      <ul style="color: #cbd5e1; font-size: 14px; margin: 10px 0; line-height: 1.8; list-style-position: inside;">
+        <li>Implemented real-time fingertip tracking algorithms for accurate cursor movement and click-action recognition.</li>
+        <li>Designed an accessible, gesture-based interface improving usability for individuals with mobility challenges.</li>
+      </ul>
+      <p style="color: #94a3b8; font-size: 13px;"><strong>Tech Used:</strong> Python, OpenCV, MediaPipe, PyAutoGUI</p>
+      <a href="ppt/hand-gesture-mouse.pptx" download style="display: inline-block; margin-top: 10px; padding: 8px 14px; background: #38bdf8; color: white; border-radius: 6px; text-decoration: none;">Access Link</a>
     </div>
-    <div class="contact-panel">
-      <div class="contact-inner">
-        <h2>Let's build something <em>worth shipping</em>.</h2>
-        <div class="contact-list">
-          <div class="c-row"><span class="label">Email</span><a href="mailto:sunil.surya2350@gmail.com">sunil.surya2350@gmail.com</a></div>
-          <div class="c-row"><span class="label">Phone</span><a href="tel:+919380198659">+91 93801 98659</a></div>
-          <div class="c-row"><span class="label">WhatsApp</span><a href="https://wa.me/919380198659" target="_blank" rel="noopener noreferrer">Chat now</a></div>
-          <div class="c-row"><span class="label">Location</span><span class="val">Bangalore, Karnataka</span></div>
-          <div class="social-row">
-            <a href="https://github.com/sunilsurya55" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a href="https://www.linkedin.com/in/sunil-k-25b654286" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a href="Resume.pdf" target="_blank">Résumé ↓</a>
-          </div>
-        </div>
-      </div>
+
+    <!-- Project 2 -->
+    <div style="background: #0f172a; padding: 20px; border-radius: 12px; border: 1px solid #334155;">
+      <h3 style="color: #facc15;">AI Document Summarizer</h3>
+      <p style="color: #cbd5e1; font-size: 14px; margin: 10px 0;">
+        Built an AI-powered web application using React.js and Tailwind CSS to automatically generate concise summaries from large
+        text documents.
+      </p>
+      <ul style="color: #cbd5e1; font-size: 14px; margin: 10px 0; line-height: 1.8; list-style-position: inside;">
+        <li>Integrated NLP-based APIs for text processing, improving information retrieval efficiency and reducing manual reading time.</li>
+        <li>Designed a clean, responsive UI enabling users to upload documents and receive structured summaries in real time.</li>
+      </ul>
+      <p style="color: #94a3b8; font-size: 13px;"><strong>Tech Used:</strong> HTML, CSS, JS, Python, NLP</p>
+      <a href="ppt/student-data-system.pptx" download style="display: inline-block; margin-top: 10px; padding: 8px 14px; background: #38bdf8; color: white; border-radius: 6px; text-decoration: none;">Access Link</a>
     </div>
-  </section>
 
-  <footer>
-    <span>© 2026 Sunil Surya</span>
-    <span>Designed &amp; built with intent</span>
-  </footer>
+    <!-- Project 3 -->
+    <div style="background: #0f172a; padding: 20px; border-radius: 12px; border: 1px solid #334155;">
+      <h3 style="color: #facc15;">Personal AI Assistant</h3>
+      <p style="color: #cbd5e1; font-size: 14px; margin: 10px 0;">
+        Currently under development, this Personal AI Assistant is designed to streamline everyday productivity with intelligent
+        task management, context-aware recommendations, and conversational interaction.
+      </p>
+      <ul style="color: #cbd5e1; font-size: 14px; margin: 10px 0; line-height: 1.8; list-style-position: inside;">
+        <li>Building a modular architecture to support voice commands, scheduling automation, and natural language understanding.</li>
+        <li>Focusing on a professional user experience with smart reminders, knowledge retrieval, and adaptive workflow support.</li>
+      </ul>
+      <p style="color: #94a3b8; font-size: 13px;"><strong>Tech Used:</strong> Python, JavaScript, NLP, API Integration</p>
+      <span style="display: inline-block; margin-top: 10px; padding: 8px 14px; background: #94a3b8; color: white; border-radius: 6px;">In Progress</span>
+    </div>
 
-</div>
+    <!-- Add more projects below if needed -->
 
-<script>
-  // typing effect
-  const roles = ["Full Stack Developer", "MERN Stack Engineer", "Problem Solver"];
-  let ri = 0, ci = 0, deleting = false;
-  function typeEffect(){
-    const el = document.getElementById("typing");
-    if(!el) return;
-    const word = roles[ri];
-    if(!deleting && ci <= word.length){
-      el.textContent = word.substring(0, ci++);
-    } else if(deleting && ci >= 0){
-      el.textContent = word.substring(0, ci--);
+  </div>
+</section>
+
+<!-- Contact page -->
+ <!-- Contact Section -->
+<section style="padding: 50px 10%; background-color: #0f172a;" id="contact">
+  <h2 style="font-size: 32px; color: #38bdf8; margin-bottom: 30px;">Get in Touch</h2>
+
+    <div style="display: flex; flex-direction: column; gap: 20px; max-width: 600px; color: #cbd5e1;">
+    <p><strong>Email:</strong> <a href="mailto:sunil.surya2350@gmail.com" target="_blank" rel="noopener noreferrer" style="color: #38bdf8;">sunil.surya2350@gmail.com</a></p>
+    <p><strong>Phone:</strong> <a href="tel:+919380198659" style="color: #38bdf8;">+91 93801 98659</a></p>
+      <p><strong>WhatsApp:</strong> <a href="https://wa.me/919380198659" target="_blank" rel="noopener noreferrer" style="color: #25D366;">Chat on WhatsApp</a></p>
+    <p><strong>Location:</strong> Bangalore, Karnataka</p>
+    
+    <div style="margin-top: 10px;">
+      <a href="https://github.com/sunilsurya55" target="_blank" style="margin-right: 15px; color: #38bdf8;">GitHub</a>
+      <a href="https://www.linkedin.com/in/sunil-k-25b654286" target="_blank" style="color: #38bdf8;">LinkedIn</a>
+    </div>
+    <a href="Resume.pdf" target="_blank" style="display: inline-block; margin-top: 10px; padding: 8px 12px; background: #38bdf8; color: white; border-radius: 6px; text-decoration: none;">Access Resume</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="background: #1e293b; color: #94a3b8; padding: 20px 10%; text-align: center;">
+  <p>&copy; 2025 Sunil Surya | All Rights Reserved</p>
+</footer>
+
+
+  <script>
+    const roles = ["Full Stack Developer", "Web Developer", "MERN Stack Enthusiast"];
+    let i = 0;
+    let j = 0;
+    let currentText = "";
+    let isDeleting = false;
+
+    function typeEffect() {
+      const typingElement = document.getElementById("typing");
+
+      if (i < roles.length) {
+        if (!isDeleting && j <= roles[i].length) {
+          currentText = roles[i].substring(0, j++);
+        } else if (isDeleting && j >= 0) {
+          currentText = roles[i].substring(0, j--);
+        }
+
+        typingElement.innerHTML = currentText;
+
+        if (j === roles[i].length) {
+          isDeleting = true;
+          setTimeout(typeEffect, 1000);
+        } else if (j === 0) {
+          isDeleting = false;
+          i = (i + 1) % roles.length;
+          setTimeout(typeEffect, 200);
+        } else {
+          setTimeout(typeEffect, isDeleting ? 50 : 100);
+        }
+      }
     }
-    if(ci === word.length){ deleting = true; setTimeout(typeEffect, 1400); }
-    else if(ci === 0 && deleting){ deleting = false; ri = (ri+1) % roles.length; setTimeout(typeEffect, 300); }
-    else setTimeout(typeEffect, deleting ? 45 : 90);
-  }
-  window.addEventListener("load", typeEffect);
 
-  // scroll-spy nav
+    window.onload = typeEffect;
+  </script>
+  
+  <script>
   const sections = document.querySelectorAll("section");
   const navLinks = document.querySelectorAll(".nav-link");
+
   window.addEventListener("scroll", () => {
     let current = "";
-    sections.forEach(s => { if(pageYOffset >= s.offsetTop - 140) current = s.id; });
-    navLinks.forEach(l => l.classList.toggle("active", l.getAttribute("href") === #${current}));
+
+    sections.forEach((section) => {
+      const sectionTop = section.offsetTop - 100;
+      if (pageYOffset >= sectionTop) {
+        current = section.getAttribute("id");
+      }
+    });
+
+    navLinks.forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === `#${current}`) {
+        link.classList.add("active");
+      }
+    });
   });
-
-  // 3D tilt — hero portrait
-  const stage = document.querySelector(".portrait-stage");
-  const portrait = document.getElementById("portrait");
-  if(stage && portrait && matchMedia('(prefers-reduced-motion: no-preference)').matches){
-    stage.addEventListener("mousemove", (e) => {
-      const r = stage.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      portrait.style.transform = rotateY(${x * 18}deg) rotateX(${-y * 18}deg);
-    });
-    stage.addEventListener("mouseleave", () => {
-      portrait.style.transform = "rotateY(0deg) rotateX(0deg)";
-    });
-  }
-
-  // 3D tilt — project cards
-  if(matchMedia('(prefers-reduced-motion: no-preference)').matches){
-    document.querySelectorAll(".tilt-card").forEach(card => {
-      card.addEventListener("mousemove", (e) => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = rotateY(${x * 8}deg) rotateX(${-y * 8}deg) translateY(-4px);
-      });
-      card.addEventListener("mouseleave", () => {
-        card.style.transform = "rotateY(0deg) rotateX(0deg) translateY(0px)";
-      });
-    });
-  }
 </script>
+
+  <!-- Mobile menu toggle script -->
+  <script>
+    const menuToggle = document.getElementById("menuToggle");
+    const mainNav = document.getElementById("mainNav");
+
+    menuToggle.addEventListener("click", () => {
+      const isOpen = mainNav.classList.toggle("open");
+      menuToggle.classList.toggle("open");
+      menuToggle.setAttribute("aria-expanded", isOpen);
+    });
+
+    mainNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mainNav.classList.remove("open");
+        menuToggle.classList.remove("open");
+        menuToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  </script>
+
 </body>
 </html>
